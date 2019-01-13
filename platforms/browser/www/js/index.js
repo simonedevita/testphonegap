@@ -1,3 +1,11 @@
+$(window).on("load",function(){
+  setTimeout(function(){
+    $("#preloader").fadeOut();
+  },500)
+})
+$(window).on('beforeunload',function(){
+  $("#preloader").fadeIn();
+})
 $(document).ready(function(){
   $("#test_ajax").on("click", function(){
     $.ajax({
