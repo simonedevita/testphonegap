@@ -8,9 +8,6 @@
     <script src="https://unpkg.com/jquery/dist/jquery.min.js"></script>
 </head>
 <body>
-  <div id="preloader">
-    <img src="assets/img/loader.gif" />
-  </div>
   <div class="menu">
     <div>
       <a href="index.html">
@@ -37,33 +34,6 @@
       <button class="btn-default" id="save_settings" onclick="saveSettings();">Salva</button>
     </div>
   </div>
-  <script>
-  $(window).on("load",function(){
-    setTimeout(function(){
-      $("#preloader").fadeOut();
-    },500)
-  })
-  $(window).on('beforeunload',function(){
-    $("#preloader").fadeIn();
-  })
-  $(document).ready(function(){
-    $("#test_ajax").on("click", function(){
-      $.ajax({
-        type: 'POST',
-        url: 'http://fuoriserie.altervista.org/appAPI.php',
-        data: {
-          'action': "getOrders"
-        },
-        error: function(jqXHR, textStatus, errorThrown){
-          console.error("The following error occured: " + textStatus);
-        },
-        success: function(response) {
-          $("#ajax_container").html(response);
-        }
-      })
-    });
-  });
-  </script>
   <script src="js/index.js"></script>
 </body>
 </html>
