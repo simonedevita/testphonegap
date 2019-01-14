@@ -362,20 +362,20 @@ module.exports = [
     ]
   },
   {
+    "id": "cordova-plugin-splashscreen.SplashScreen",
+    "file": "plugins/cordova-plugin-splashscreen/www/splashscreen.js",
+    "pluginId": "cordova-plugin-splashscreen",
+    "clobbers": [
+      "navigator.splashscreen"
+    ]
+  },
+  {
     "id": "cordova-plugin-vibration.notification",
     "file": "plugins/cordova-plugin-vibration/www/vibration.js",
     "pluginId": "cordova-plugin-vibration",
     "merges": [
       "navigator.notification",
       "navigator"
-    ]
-  },
-  {
-    "id": "cordova-plugin-splashscreen.SplashScreen",
-    "file": "plugins/cordova-plugin-splashscreen/www/splashscreen.js",
-    "pluginId": "cordova-plugin-splashscreen",
-    "clobbers": [
-      "navigator.splashscreen"
     ]
   }
 ];
@@ -392,9 +392,9 @@ module.exports.metadata =
   "cordova-plugin-inappbrowser": "1.7.2",
   "cordova-plugin-media-capture": "1.4.3",
   "cordova-plugin-network-information": "1.3.4",
+  "cordova-plugin-splashscreen": "5.0.2",
   "cordova-plugin-vibration": "2.1.6",
-  "cordova-plugin-whitelist": "1.3.3",
-  "cordova-plugin-splashscreen": "5.0.2"
+  "cordova-plugin-whitelist": "1.3.3"
 };
 // BOTTOM OF METADATA
 });
