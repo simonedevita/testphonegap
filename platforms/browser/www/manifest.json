@@ -1,11 +1,11 @@
 {
   "background_color": "#FFF",
   "display": "standalone",
-  "name": "sdv phonegap 1",
-  "short_name": "sdv phonegap 1",
-  "version": "com.phonegap.helloworld",
-  "description": "test app phonegap.",
-  "author": "PhoneGap Team",
+  "name": "SDV",
+  "short_name": "SDV",
+  "version": "it.simonedevita.firstapp",
+  "description": "The first app created with phonegap.",
+  "author": "Simone De Vita",
   "icons": [],
   "start_url": "index.html"
 }
