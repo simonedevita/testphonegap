@@ -47,7 +47,7 @@ function saveSettings(){
       changePage("#ordersPage");
     }
   }else{
-    notify('Errore nelle impostazioni, assicurati di inserire correttamente URL e password', function(){}, '', 'OK');
+    notify('Errore nelle impostazioni, assicurati di inserire correttamente URL e password', null, '', 'OK');
   }
 }
 //Page load
@@ -59,6 +59,9 @@ function removeLoader(){
 //Change page handler
 function changePage(targetPage){
   $("#preloader").show();
+  if(targetPage == '#ordersPage'){
+    getOrders();
+  }
   $(".page-container").each(function(){
     $(this).fadeOut();
   });
@@ -86,7 +89,7 @@ function getOrders(){
           if(orders.length > 0){
             for(var i=0;i<orders.length;i++){
               orderDate = getFormattedDate(orders[i].date_order);
-              ordersString += '<div class="single-order">Ordine #'+orders[i].id +' del '+orderDate+'</div>';
+              ordersString += '<div data-order="'+orders[i].id+'" class="single-order">Ordine #'+orders[i].id +' del '+orderDate+'</div>';
             }
           }
           $(".orders-container").html(ordersString);
@@ -101,7 +104,77 @@ function getOrders(){
     notify('Errore nelle impostazioni, assicurati di inserire correttamente URL e password', null, 'Attenzione!', 'OK');
   }
 }
-
-$("#getOrders").on("click", function(){
-  getOrders();
+//Get single order
+function getOrder(orderId){
+  if(apiUrl != undefined && apiUrl != null && apiUrl != '' && apiPsw != undefined && apiPsw != null && apiPsw != ''){
+    $.ajax({
+      type: 'POST',
+      url: apiUrl+'/appAPI.php',
+      data: {
+        'action': "getOrder",
+        'apiPsw': apiPsw,
+        'orderId': orderId
+      },
+      error: function(jqXHR, textStatus, errorThrown){
+        console.error("The following error occured: " + textStatus);
+      },
+      success: function(response) {
+        var orderForm = '';
+        if(response != 'error'){
+          var orders = JSON.parse(response);
+          if(orders.length > 0){
+            order = orders[0];
+            orderDate = getFormattedDate(order.date_order);
+            orderForm += '<div class="order-detail"><span>Data:</span> '+orderDate+'</div>';
+            orderForm += '<div class="order-detail"><span>Totale:</span> '+order.total+'€</div>';
+            if(order.status == 'Da pagare'){
+              orderForm += '<label for="orderStatus">Stato:</label>';
+              orderForm += '<select id="orderStatus"><option selected value="Da pagare">Da pagare</option><option value="Pagato">Pagato</option></select>';
+              orderForm += '<button data-order="'+order.id+'" class="btn-default" id="saveOrder">SALVA ORDINE</button>'
+            }else{
+              orderForm = "L'ordine è stato pagato.";
+            }
+          }
+          $(".order-container").html(orderForm);
+        }else{
+          $(".order-container").html('Non è stato possibile trovare l\'ordine, riprovare.');
+        }
+        changePage('#orderPage');
+      }
+    });
+  }else{
+    changePage('#mainPage');
+    notify('Errore nelle impostazioni, assicurati di inserire correttamente URL e password', null, 'Attenzione!', 'OK');
+  }
+}
+function saveOrder(orderId,orderStatus){
+  if(apiUrl != undefined && apiUrl != null && apiUrl != '' && apiPsw != undefined && apiPsw != null && apiPsw != ''){
+    $.ajax({
+      type: 'POST',
+      url: apiUrl+'/appAPI.php',
+      data: {
+        'action': "saveOrder",
+        'apiPsw': apiPsw,
+        'orderId': orderId,
+        'orderStatus': orderStatus
+      },
+      error: function(jqXHR, textStatus, errorThrown){
+        console.error("The following error occured: " + textStatus);
+      },
+      success: function(response) {
+        notify('Ordine salvato correttamente', null, 'Attenzione!', 'OK');
+      }
+    });
+  }else{
+    notify('Errore nelle impostazioni, assicurati di inserire correttamente URL e password', null, 'Attenzione!', 'OK');
+  }
+}
+$(".orders-container").on("click",".single-order", function(){
+  var orderId = $(this).data("order");
+  getOrder(orderId);
+});
+$(".order-container").on("click","#saveOrder", function(){
+  var orderStatus = $("#orderStatus").val();
+  var orderId = $(this).data("order");
+  saveOrder(orderId,orderStatus);
 });
