@@ -8,8 +8,7 @@
         Simone De Vita
     </author>
     <content src="index.html" />
-    <access origin="http://fuoriserie.altervista.org" />
-    <access origin="https://cdnjs.cloudflare.com" />
+    <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
     <allow-intent href="tel:*" />
