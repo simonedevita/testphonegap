@@ -53,7 +53,7 @@ function removeLoader(){
 }
 //Change page handler
 function changePage(targetPage){
-  $("#preloader").fadeIn();
+  $("#preloader").show();
   $(".page-container").each(function(){
     $(this).fadeOut();
   });
@@ -99,5 +99,4 @@ function getOrders(){
 $("#getOrders").on("click", function(){
   getOrders();
 });
-getOrders();
 removeLoader();
