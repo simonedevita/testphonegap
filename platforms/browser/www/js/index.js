@@ -13,7 +13,13 @@ $("#test_ajax").on("click", function(){
       console.error("The following error occured: " + textStatus);
     },
     success: function(response) {
-      $("#ajax_container").html(response);
+      var newHtml = '';
+      if(response.length > 0){
+        for(var i=0;i<response.length;i++){
+          newHtml += 'Ordine #'+response[i].id +' del '+response[i].date_order+'<br>';
+        }
+      }
+      $("#ajax_container").html(newHtml);
     }
   })
 });
