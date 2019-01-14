@@ -5,6 +5,7 @@ $("#test_ajax").on("click", function(){
   $.ajax({
     type: 'POST',
     url: 'http://fuoriserie.altervista.org/appAPI.php',
+    dataType: 'jsonp',
     data: {
       'action': "getOrders"
     },
