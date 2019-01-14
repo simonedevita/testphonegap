@@ -1,17 +1,15 @@
 function onDeviceReady() {
-  $("#getOrders").on("click", function(){
-    getOrders();
-  });
   removeLoader();
 }
 document.addEventListener("deviceready", onDeviceReady, false);
+//Document is ready
 var storage = window.localStorage;
 var apiUrl = storage.getItem('apiUrl');
 var apiPsw = storage.getItem('apiPsw');
 if(apiUrl != undefined && apiUrl != null){
   $("#api_url").val(apiUrl);
 }
-if(apiPsw != undefined && apiUrl != null){
+if(apiPsw != undefined && apiPsw != null){
   $("#api_psw").val(apiPsw);
 }
 
@@ -36,7 +34,7 @@ function getFormattedDate(date) {
 function saveSettings(){
   var urlInput = $("#api_url").val();
   var pswInput = $("#api_psw").val();
-  if(urlInput != 'undefined' && urlInput != null && urlInput != ''){
+  if(urlInput != undefined && urlInput != null && urlInput != '' && pswInput != undefined && pswInput != null && pswInput != ''){
     if(urlInput == 'delete'){
       storage.removeItem('apiUrl');
       storage.removeItem('apiPsw0');
@@ -48,8 +46,8 @@ function saveSettings(){
       getOrders();
       changePage("#ordersPage");
     }
-  } else{
-    notify('Url non valido', alertDismissed(), '', 'OK');
+  }else{
+    notify('Errore nelle impostazioni, assicurati di inserire correttamente URL e password', function(){}, '', 'OK');
   }
 }
 //Page load
@@ -100,6 +98,10 @@ function getOrders(){
     });
   }else{
     changePage('#mainPage');
-    notify('Url non valido', null, 'Attenzione!', 'OK');
+    notify('Errore nelle impostazioni, assicurati di inserire correttamente URL e password', null, 'Attenzione!', 'OK');
   }
 }
+
+$("#getOrders").on("click", function(){
+  getOrders();
+});
