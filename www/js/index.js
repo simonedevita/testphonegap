@@ -1,7 +1,7 @@
 var storage = window.localStorage;
-var url = storage.getItem('ordersUrl');
-if(url != 'undefined' && url != null){
-  $("#orders_url").val(url);
+var apiUrl = storage.getItem('apiUrl');
+if(apiUrl != 'undefined' && apiUrl != null){
+  $("#api_url").val(apiUrl);
 }
 
 function notify(notificationString, notificationCallback, notificationTitle, notificationButton){
@@ -13,16 +13,17 @@ function notify(notificationString, notificationCallback, notificationTitle, not
 }
 
 function alertDismissed() {
-  $("#orders_url").focus();
+  $("#api_url").focus();
 }
 
 function saveSettings(){
-  var urlInput = $("#orders_url").val();
+  var urlInput = $("#api_url").val();
   if(urlInput != 'undefined' && urlInput != null && urlInput != ''){
     if(urlInput == 'delete'){
-      storage.removeItem('ordersUrl');
+      storage.removeItem('apiUrl');
     } else{
-      storage.setItem('ordersUrl', urlInput);
+      storage.setItem('apiUrl', urlInput);
+      apiUrl = urlInput;
       changePage("#ordersPage");
     }
   } else{
@@ -46,24 +47,37 @@ function changePage(targetPage){
 }
 //Get Orders request
 $("#getOrders").on("click", function(){
-  $.ajax({
-    type: 'POST',
-    url: 'http://fuoriserie.altervista.org/appAPI.php',
-    data: {
-      'action': "getOrders"
-    },
-    error: function(jqXHR, textStatus, errorThrown){
-      console.error("The following error occured: " + textStatus);
-    },
-    success: function(response) {
-      var newHtml = '';
-      if(response.length > 0){
-        for(var i=0;i<response.length;i++){
-          newHtml += '<div class="single-order">Ordine #'+response[i].id +' del '+response[i].date_order+'</div>';
+  if(apiUrl != undefined && apiUrl != null && apiUrl != ''){
+    $.ajax({
+      type: 'POST',
+      url: apiUrl+'/appAPI.php',
+      data: {
+        'action': "getOrders"
+      },
+      error: function(jqXHR, textStatus, errorThrown){
+        console.error("The following error occured: " + textStatus);
+      },
+      success: function(response) {
+        var newHtml = '';
+        console.log(response);
+        if(response != 'error'){
+          var orders = JSON.parse(response);
+          if(orders.length > 0){
+            for(var i=0;i<orders.length;i++){
+              newHtml += '<div class="single-order">Ordine #'+orders[i].id +' del '+orders[i].date_order+'</div>';
+            }
+          }
+          $(".orders-container").html(newHtml);
+        }else{
+          $(".orders-container").html('Non è stato possibile trovare ordini, riprovare.');
         }
+
       }
-      $(".orders-container").html(newHtml);
-    }
-  })
+    });
+  }else{
+    changePage('mainPage');
+    notify('Url non valido', alertDismissed(), '', 'OK');
+  }
+
 });
 removeLoader();
