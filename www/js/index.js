@@ -1,8 +1,4 @@
 function onDeviceReady() {
-  navigator.splashscreen.show();
-    window.setTimeout(function () {
-        navigator.splashscreen.hide();
-    }, 3000);
   $("#getOrders").on("click", function(){
     getOrders();
   });

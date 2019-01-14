@@ -15,6 +15,8 @@
     <preference name="SplashMaintainAspectRatio" value="true" />
     <preference name="SplashShowOnlyFirstTime" value="false" />
     <preference name="SplashScreenSpinnerColor" value="white" />
+    <preference name="phonegap-version" value="cli-7.0.1" />
+    <preference name="pgb-builder-version" value="2" />
     <platform name="android">
         <icon density="ldpi" src="www/res/icon/android/ldpi-icon.png" />
         <icon density="mdpi" src="www/res/icon/android/mdpi-icon.png" />
