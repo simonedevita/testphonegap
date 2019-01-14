@@ -1,5 +1,3 @@
-document.addEventListener("deviceready", onDeviceReady, false);
-
 function onDeviceReady() {
   var storage = window.localStorage;
   var apiUrl = storage.getItem('apiUrl');
@@ -103,5 +101,5 @@ function onDeviceReady() {
     getOrders();
   });
   removeLoader();
-
 }
+document.addEventListener("deviceready", onDeviceReady, false);
