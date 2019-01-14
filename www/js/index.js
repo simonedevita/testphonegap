@@ -1,7 +1,11 @@
 var storage = window.localStorage;
 var apiUrl = storage.getItem('apiUrl');
-if(apiUrl != 'undefined' && apiUrl != null){
+var apiPsw = storage.getItem('apiPsw');
+if(apiUrl != undefined && apiUrl != null){
   $("#api_url").val(apiUrl);
+}
+if(apiPsw != undefined && apiUrl != null){
+  $("#api_psw").val(apiPsw);
 }
 
 function notify(notificationString, notificationCallback, notificationTitle, notificationButton){
@@ -12,18 +16,29 @@ function notify(notificationString, notificationCallback, notificationTitle, not
   }
 }
 
-function alertDismissed() {
-  $("#api_url").focus();
+function getFormattedDate(date) {
+  date = new Date(date);
+  var year = date.getFullYear();
+  var month = (1 + date.getMonth()).toString();
+  month = month.length > 1 ? month : '0' + month;
+  var day = date.getDate().toString();
+  day = day.length > 1 ? day : '0' + day;
+  return day + '/' + month + '/' + year;
 }
 
 function saveSettings(){
   var urlInput = $("#api_url").val();
+  var pswInput = $("#api_psw").val();
   if(urlInput != 'undefined' && urlInput != null && urlInput != ''){
     if(urlInput == 'delete'){
       storage.removeItem('apiUrl');
-    } else{
+      storage.removeItem('apiPsw0');
+    }else {
       storage.setItem('apiUrl', urlInput);
+      storage.setItem('apiPsw', pswInput);
       apiUrl = urlInput;
+      apiPsw = pswInput;
+      getOrders();
       changePage("#ordersPage");
     }
   } else{
@@ -46,28 +61,30 @@ function changePage(targetPage){
   removeLoader();
 }
 //Get Orders request
-$("#getOrders").on("click", function(){
-  if(apiUrl != undefined && apiUrl != null && apiUrl != ''){
+function getOrders(){
+  if(apiUrl != undefined && apiUrl != null && apiUrl != '' && apiPsw != undefined && apiPsw != null && apiPsw != ''){
     $.ajax({
       type: 'POST',
       url: apiUrl+'/appAPI.php',
       data: {
-        'action': "getOrders"
+        'action': "getOrders",
+        'apiPsw': apiPsw
       },
       error: function(jqXHR, textStatus, errorThrown){
         console.error("The following error occured: " + textStatus);
       },
       success: function(response) {
-        var newHtml = '';
+        var ordersString = '';
         console.log(response);
         if(response != 'error'){
           var orders = JSON.parse(response);
           if(orders.length > 0){
             for(var i=0;i<orders.length;i++){
-              newHtml += '<div class="single-order">Ordine #'+orders[i].id +' del '+orders[i].date_order+'</div>';
+              orderDate = getFormattedDate(orders[i].date_order);
+              ordersString += '<div class="single-order">Ordine #'+orders[i].id +' del '+orderDate+'</div>';
             }
           }
-          $(".orders-container").html(newHtml);
+          $(".orders-container").html(ordersString);
         }else{
           $(".orders-container").html('Non è stato possibile trovare ordini, riprovare.');
         }
@@ -75,9 +92,12 @@ $("#getOrders").on("click", function(){
       }
     });
   }else{
-    changePage('mainPage');
-    notify('Url non valido', alertDismissed(), '', 'OK');
+    changePage('#mainPage');
+    notify('Url non valido', null, 'Attenzione!', 'OK');
   }
-
+}
+$("#getOrders").on("click", function(){
+  getOrders();
 });
+getOrders();
 removeLoader();
