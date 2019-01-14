@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.phonegap.helloworld" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
-    <name>sdv phonegap 1</name>
+<widget id="it.simonedevita.firstapp" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+    <name>SDV</name>
     <description>
-        test app phonegap.
+        The first app created with phonegap.
     </description>
-    <author email="support@phonegap.com" href="http://phonegap.com">
-        PhoneGap Team
+    <author email="info@simonedevita.it" href="https://www.simonedevita.it">
+        Simone De Vita
     </author>
     <content src="index.html" />
     <preference name="DisallowOverscroll" value="true" />
