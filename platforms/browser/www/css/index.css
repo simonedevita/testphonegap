@@ -82,16 +82,17 @@ label{
   display:block;
   margin: 15px 0 0;
 }
-.form-group input[type="text"],.form-group input[type="password"], select{
+input[type="text"], input[type="password"], select{
   margin-top: 5px;
   background-color: white;
   padding: 8px 10px;
   border-radius: 5px;
   border: 1px solid #016d8e;
-  width: 90%;
+  width: 100%;
   position: relative;
   max-width: 500px;
   display:block;
+  box-sizing: border-box;
 }
 .single-order {
   padding: 8px;
@@ -101,4 +102,29 @@ label{
 }
 .single-order:nth-of-type(even) {
   background-color: #484848;
+}
+.order-detail{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+}
+.product-detail{
+  font-size:14px;
+}
+#alert{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  z-index:999;
+  padding:8px;
+  color:white;
+  text-align:center;
+  font-size:12px;
+}
+#alert.success{
+  background-color:green;
+}
+#alert.danger{
+  background-color:red;
 }
